@@ -1,0 +1,53 @@
+diff --git a/gui/theme/portrait_hdpi/pages/advanced.xml b/gui/theme/portrait_hdpi/pages/advanced.xml
+index 936a8874..1915ca0b 100644
+--- a/gui/theme/portrait_hdpi/pages/advanced.xml
++++ b/gui/theme/portrait_hdpi/pages/advanced.xml
+@@ -13,7 +13,7 @@
+ 			</text>
+ 
+ 			<listbox style="group_list">
+-				<placement x="0" y="%row1_1a_y%" w="%screen_w%" h="%files_np_w%"/>
++				<placement x="0" y="%row1_1a_y%" w="%screen_w%" h="%bl_h4%"/>
+ 				<listitem name="{@mount_btn}">
+ 					<icon res="mount_list"/>
+ 					<action function="page">mount</action>
+diff --git a/gui/theme/portrait_hdpi/resources/vars.xml b/gui/theme/portrait_hdpi/resources/vars.xml
+index 7dcffc29..90465ba6 100644
+--- a/gui/theme/portrait_hdpi/resources/vars.xml
++++ b/gui/theme/portrait_hdpi/resources/vars.xml
+@@ -437,7 +437,7 @@
+ 		<variable name="main_switch_icon_x" value="946"/>
+ 
+ 		<!-- Advanced -->
+-		<variable name="adv_additions_h" value="%screen_w%-200"/>
++		<variable name="adv_additions_h" value="%screen_min_cut%-1380"/>
+ 
+ 		<!-- Sort menu -->
+ 		<variable name="ab_menu_y" value="72+%cutout_w%"/>
+diff --git a/partition.cpp b/partition.cpp
+index 3b449bc5..70bd51fb 100644
+--- a/partition.cpp
++++ b/partition.cpp
+@@ -3261,11 +3261,17 @@ bool TWPartition::Update_Size(bool Display_Error) {
+ 
+ 	if (Has_Data_Media) {
+ 		if (Mount(Display_Error)) {
+-			Used = backup_exclusions.Get_Folder_Size(Mount_Point);
+-			Backup_Size = Used;
+-			int bak = (int)(Used / 1048576LLU);
+-			int fre = (int)(Free / 1048576LLU);
+-			LOGINFO("Data backup size is %iMB, free: %iMB.\n", bak, fre);
++			if (Is_Encrypted && !Is_Decrypted) {
++				LOGINFO("Data partition is encrypted and not yet decrypted. Skipping recursive size calculation to prevent boot delay.\n");
++				Used = 0;
++				Backup_Size = 0;
++			} else {
++				Used = backup_exclusions.Get_Folder_Size(Mount_Point);
++				Backup_Size = Used;
++				int bak = (int)(Used / 1048576LLU);
++				int fre = (int)(Free / 1048576LLU);
++				LOGINFO("Data backup size is %iMB, free: %iMB.\n", bak, fre);
++			}
+ 		} else {
+ 			if (!Was_Already_Mounted)
+ 				UnMount(false);

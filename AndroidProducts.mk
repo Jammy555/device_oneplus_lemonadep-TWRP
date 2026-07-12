@@ -7,3 +7,7 @@
 PRODUCT_MAKEFILES := \
     $(LOCAL_DIR)/twrp_lemonadep.mk
 
+COMMON_LUNCH_CHOICES := \
+    twrp_lemonadep-user \
+    twrp_lemonadep-userdebug \
+    twrp_lemonadep-eng

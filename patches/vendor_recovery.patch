@@ -1,0 +1,37 @@
+diff --git a/OrangeFox_A12.sh b/OrangeFox_A12.sh
+index ced16b7..545e495 100755
+--- a/OrangeFox_A12.sh
++++ b/OrangeFox_A12.sh
+@@ -37,13 +37,17 @@ export OF_USE_MAGISKBOOT=1
+ export FOX_INTERNAL_RELEASE=R12.0
+ 
+ # device name
+-FOX_DEVICE=$(cut -d'_' -f2 <<<$TARGET_PRODUCT)
++if [ -n "$TARGET_PRODUCT" ]; then
++   FOX_DEVICE=$(cut -d'_' -f2 <<<$TARGET_PRODUCT)
++else
++   FOX_DEVICE=$(echo "$TARGET_RECOVERY_ROOT_OUT" | awk -F'/target/product/' '{print $2}' | cut -d'/' -f1)
++fi
+ 
+ # The name of this script
+ THIS_SCRIPT=$(basename $0)
+ 
+ # environment/build-var imports
+-FOXENV=/tmp/$FOX_DEVICE/fox_env.sh
++FOXENV=out/target/product/$FOX_DEVICE/fox_env.sh
+ if [ -f "$FOXENV" ]; then
+    source "$FOXENV"
+ else
+@@ -1198,10 +1202,10 @@ if [ "$FOX_VENDOR_CMD" = "Fox_Before_Recovery_Image" ]; then
+      ln -sf /system/bin/twrp "$FOX_RAMDISK/$RAMDISK_SYSTEM_BIN/fox"
+   fi
+ 
+-  # symlink for /sbin/magiskboot in /system/bin/
++  # copy magiskboot directly to /system/bin/ instead of symlinking to non-existent /sbin/
+   if [ -f "$FOX_RAMDISK/$RAMDISK_SBIN/magiskboot" ]; then
+      rm -f "$FOX_RAMDISK/$RAMDISK_SYSTEM_BIN/magiskboot"
+-     ln -sf /sbin/magiskboot "$FOX_RAMDISK/$RAMDISK_SYSTEM_BIN/magiskboot"
++     $CP -pf "$FOX_RAMDISK/$RAMDISK_SBIN/magiskboot" "$FOX_RAMDISK/$RAMDISK_SYSTEM_BIN/magiskboot"
+   fi
+ 
+   # dmsetup - for killing userdata before formatting data
