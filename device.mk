@@ -77,6 +77,12 @@ OF_FL_PATH2 := /sys/class/leds/led:switch_0
 # Default timezone
 OF_DEFAULT_TIMEZONE := IST-5:30
 
+# Magisk & Backup settings
+FOX_MOVE_MAGISK_INSTALLER_TO_RAMDISK := 1
+OF_QUICK_BACKUP_LIST := /boot;/data;/metadata;/vendor_boot;/dtbo;
+OF_SKIP_MULTIUSER_FOLDERS_BACKUP := 1
+
+
 TW_SUPPORT_INPUT_AIDL_HAPTICS := true
 
 #TW_LOAD_VENDOR_MODULES := "adsp_loader_dlkm.ko oplus_chg.ko touchscreen.ko haptic.ko"
