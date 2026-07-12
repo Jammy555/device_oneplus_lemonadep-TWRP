@@ -21,7 +21,12 @@ $(call inherit-product, device/oneplus/sm8350-common/common.mk)
 
 PRODUCT_PACKAGES += \
     qcom_decrypt \
-    qcom_decrypt_fbe
+    qcom_decrypt_fbe \
+    android.system.keystore2 \
+    fsck.f2fs.vendor_ramdisk \
+    defrag.f2fs.vendor_ramdisk \
+    fastbootd \
+    android.hardware.fastboot@1.1-impl-mock
 
 # Crypto
 TW_INCLUDE_CRYPTO := true
@@ -29,6 +34,7 @@ TW_INCLUDE_CRYPTO_FBE := true
 TW_INCLUDE_FBE_METADATA_DECRYPT := true
 PLATFORM_SECURITY_PATCH := 2099-12-31
 VENDOR_SECURITY_PATCH := 2099-12-31
+BOOT_SECURITY_PATCH := $(PLATFORM_SECURITY_PATCH)
 PLATFORM_VERSION := 99.87.36
 PLATFORM_VERSION_LAST_STABLE := $(PLATFORM_VERSION)
 BOARD_USES_QCOM_FBE_DECRYPTION := true
@@ -36,8 +42,11 @@ TW_USE_FSCRYPT_POLICY := 2
 
 # TWRP specific build flags
 TW_THEME := portrait_hdpi
+TW_FORCE_KEYMASTER_VER := true
+OF_DEFAULT_KEYMASTER_VERSION := 4.1
 RECOVERY_SDCARD_ON_DATA := true
 TARGET_RECOVERY_QCOM_RTC_FIX := true
+
 TW_EXCLUDE_DEFAULT_USB_INIT := true
 TW_EXTRA_LANGUAGES := true
 TW_DEFAULT_LANGUAGE := en
