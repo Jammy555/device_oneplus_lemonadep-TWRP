@@ -93,9 +93,11 @@ OF_SKIP_MULTIUSER_FOLDERS_BACKUP := 1
 
 
 TW_SUPPORT_INPUT_AIDL_HAPTICS := true
+TW_SUPPORT_INPUT_AIDL_HAPTICS_FQNAME := "IVibrator/default"
+TW_FRAMERATE := 60
 
-#TW_LOAD_VENDOR_MODULES := "adsp_loader_dlkm.ko oplus_chg.ko touchscreen.ko haptic.ko"
-TW_LOAD_VENDOR_MODULES := "aw8697.ko adsp_loader_dlkm.ko oplus_chg.ko touchscreen.ko haptic.ko"
+TW_LOAD_VENDOR_MODULES := "aw8697.ko adsp_loader_dlkm.ko haptic.ko"
+
 
 #Properties
 TW_OVERRIDE_SYSTEM_PROPS := \
